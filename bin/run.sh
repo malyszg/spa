@@ -47,7 +47,7 @@ done
 
 echo "Tworzenie bazy i tabel Doctrine..."
 ${COMPOSE_CMD} exec -T app php bin/console doctrine:database:create --if-not-exists --no-interaction
-${COMPOSE_CMD} exec -T app php bin/console doctrine:schema:update --force --no-interaction
+${COMPOSE_CMD} exec -T app php bin/console doctrine:migrations:migrate --no-interaction
 
 echo "Aplikacja dziala pod adresem: http://localhost:${APP_PORT:-15014}"
 echo "phpMyAdmin dziala pod adresem: http://localhost:${PHPMYADMIN_PORT:-8086}"

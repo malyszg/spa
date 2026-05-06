@@ -2,7 +2,7 @@
 
 namespace App\Tests;
 
-use App\Entity\Booking;
+use App\Infrastructure\Persistence\Doctrine\Entity\BookingRecord;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -37,7 +37,7 @@ class HomeControllerTest extends WebTestCase
         self::assertResponseRedirects('/');
         $client->followRedirect();
 
-        $savedBooking = $entityManager->getRepository(Booking::class)->findOneBy([
+        $savedBooking = $entityManager->getRepository(BookingRecord::class)->findOneBy([
             'email' => 'jan@example.com',
         ]);
 

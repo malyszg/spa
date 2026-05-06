@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Booking;
+use App\Form\Model\BookingFormData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -51,7 +51,7 @@ class BookingType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Booking::class,
+            'data_class' => BookingFormData::class,
         ]);
     }
 }

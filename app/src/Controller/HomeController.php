@@ -2,10 +2,11 @@
 
 namespace App\Controller;
 
-use App\Entity\Booking;
+use App\Application\UseCase\CreateBooking\CreateBookingCommand;
+use App\Application\UseCase\CreateBooking\CreateBookingUseCase;
 use App\Form\BookingType;
 use App\Form\ContactType;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Form\Model\BookingFormData;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,10 +16,10 @@ use Symfony\Component\Routing\Attribute\Route;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home', methods: ['GET', 'POST'])]
-    public function index(Request $request, EntityManagerInterface $entityManager): Response
+    public function index(Request $request, CreateBookingUseCase $createBookingUseCase): Response
     {
-        $booking = new Booking();
-        $bookingForm = $this->createForm(BookingType::class, $booking)
+        $bookingFormData = new BookingFormData();
+        $bookingForm = $this->createForm(BookingType::class, $bookingFormData)
             ->add('submit', SubmitType::class, ['label' => 'Zarezerwuj']);
 
         $contactForm = $this->createForm(ContactType::class)
@@ -26,15 +27,20 @@ class HomeController extends AbstractController
 
         $bookingForm->handleRequest($request);
         if ($bookingForm->isSubmitted() && $bookingForm->isValid()) {
-            $entityManager->persist($booking);
-            $entityManager->flush();
+            $command = new CreateBookingCommand(
+                (string) $bookingFormData->name,
+                (string) $bookingFormData->email,
+                \DateTimeImmutable::createFromInterface($bookingFormData->date),
+                (int) $bookingFormData->guests
+            );
+            $booking = $createBookingUseCase->execute($command);
 
             $this->addFlash(
                 'success',
                 sprintf(
                     'Rezerwacja przyjeta dla %s na %s.',
-                    (string) $booking->getName(),
-                    $booking->getDate()?->format('Y-m-d')
+                    $booking->name(),
+                    $booking->date()->format('Y-m-d')
                 )
             );
 
