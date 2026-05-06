@@ -1,0 +1,17 @@
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+
+# Local editor/project files
+.idea/
+token.md
+
+# Symfony application local/runtime files
+app/vendor/
+app/var/
+app/.env
+app/.env.local
+app/.env.*.local
+app/public/bundles/
+app/.phpunit.cache/

@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Prosta rezerwacja SPA{% endblock %}
+
+{% block body %}
+    <main class="container">
+        <section class="hero">
+            <h1>Apartament i pobyt</h1>
+            <p>Prosta rezerwacja oraz szybki kontakt w minimalistycznym stylu.</p>
+        </section>
+
+        {% for message in app.flashes('success') %}
+            <div class="flash-success">{{ message }}</div>
+        {% endfor %}
+
+        <section class="card">
+            <h2>Rezerwacja</h2>
+            {{ form_start(booking_form) }}
+                {{ form_row(booking_form.name) }}
+                {{ form_row(booking_form.email) }}
+                {{ form_row(booking_form.date) }}
+                {{ form_row(booking_form.guests) }}
+                {{ form_row(booking_form.submit) }}
+            {{ form_end(booking_form) }}
+        </section>
+
+        <section class="card">
+            <h2>Formularz kontaktowy</h2>
+            {{ form_start(contact_form) }}
+                {{ form_row(contact_form.name) }}
+                {{ form_row(contact_form.email) }}
+                {{ form_row(contact_form.message) }}
+                {{ form_row(contact_form.submit) }}
+            {{ form_end(contact_form) }}
+        </section>
+    </main>
+{% endblock %}

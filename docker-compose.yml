@@ -1,0 +1,42 @@
+services:
+  app:
+    build: .
+    container_name: spa_symfony_app
+    depends_on:
+      - db
+    ports:
+      - "${APP_PORT:-15014}:80"
+    volumes:
+      - ./app:/var/www/html
+    environment:
+      DB_HOST: ${DB_HOST:-db}
+      DB_PORT: ${DB_PORT:-3306}
+      DB_NAME: ${DB_NAME:-spa}
+      DB_USER: ${DB_USER:-spa}
+      DB_PASSWORD: ${DB_PASSWORD:-spa}
+
+  db:
+    image: mysql:8.4
+    container_name: spa_mysql
+    environment:
+      MYSQL_DATABASE: ${DB_NAME:-spa}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root}
+      MYSQL_USER: ${DB_USER:-spa}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-spa}
+    volumes:
+      - db_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin:5.2.1
+    container_name: spa_phpmyadmin
+    depends_on:
+      - db
+    ports:
+      - "${PHPMYADMIN_PORT:-8086}:80"
+    environment:
+      PMA_HOST: ${DB_HOST:-db}
+      PMA_USER: root
+      PMA_PASSWORD: ${DB_ROOT_PASSWORD:-root}
+
+volumes:
+  db_data:
