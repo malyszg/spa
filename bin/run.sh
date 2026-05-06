@@ -11,6 +11,16 @@ if [ ! -f "${APP_DIR}/composer.json" ]; then
   exit 1
 fi
 
+if [ ! -f "${APP_DIR}/.env" ]; then
+  if [ -f "${APP_DIR}/.env.example" ]; then
+    cp "${APP_DIR}/.env.example" "${APP_DIR}/.env"
+    echo "Utworzono app/.env na podstawie app/.env.example"
+  else
+    echo "Brak app/.env i app/.env.example"
+    exit 1
+  fi
+fi
+
 cd "${PROJECT_ROOT}"
 
 if docker compose version >/dev/null 2>&1; then

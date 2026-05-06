@@ -23,7 +23,7 @@ jobs:
         working-directory: app
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -35,6 +35,9 @@ jobs:
       - name: Validate composer.json
         run: composer validate --no-check-publish
 
+      - name: Prepare Symfony env file
+        run: cp .env.example .env
+
       - name: Install dependencies
         run: composer install --no-interaction --prefer-dist
 
@@ -45,6 +48,6 @@ jobs:
     name: Docker build check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Build Docker image
         run: docker compose build

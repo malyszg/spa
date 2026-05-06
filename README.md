@@ -13,6 +13,7 @@ Prosty projekt SPA w Symfony z:
    ```bash
    ./bin/run.sh
    ```
+   Skrypt automatycznie utworzy `app/.env` z `app/.env.example`, jesli plik nie istnieje.
 2. Otworz aplikacje:
    [http://localhost:15014](http://localhost:15014)
 3. Otworz phpMyAdmin:
